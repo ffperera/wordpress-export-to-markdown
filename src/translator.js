@@ -9,7 +9,21 @@ function initTurndownService() {
 	});
 
 	turndownService.use(turndownPluginGfm.tables);
-
+	
+	// h2 id
+	turndownService.addRule('h2', {
+		filter: 'h2',
+		replacement: (content, node) => {
+			const id = node.getAttribute('id') ? node.getAttribute('id) : '';
+			let anchor = '';
+			if (id) {
+				anchor = ' {#' + id + '}';	
+			}
+			
+			return '\n\n## ' + content + anchor;
+		}
+	});
+	
 	// preserve embedded tweets
 	turndownService.addRule('tweet', {
 		filter: node => node.nodeName === 'BLOCKQUOTE' && node.getAttribute('class') === 'twitter-tweet',
